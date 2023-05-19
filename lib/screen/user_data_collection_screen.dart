@@ -240,7 +240,7 @@ class _UserDataCollectionState extends State<UserDataCollection> {
                             ElevatedButton(onPressed: ()async{
                               FilePickerResult? result = await FilePicker.platform.pickFiles(
                                 type: FileType.custom,
-                                allowedExtensions: ['pdf'],
+                                allowedExtensions: ['pdf','doc'],
                               );
 
                               if (result != null) {
@@ -267,7 +267,7 @@ class _UserDataCollectionState extends State<UserDataCollection> {
                                 isLoading = false;
                                 if (isSuccessful) {
                                   await authProvider.fetchCurrentUser();
-                                 // nextPage();
+                                  nextPage();
                                 } else {
                                   setState(() {});
                                 }
