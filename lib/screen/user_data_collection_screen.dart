@@ -9,6 +9,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/auth_provider.dart';
+import '../utils/accessory_widgets.dart';
 import '../utils/custom_colors.dart';
 import 'home_screen.dart';
 
@@ -257,6 +258,10 @@ class _UserDataCollectionState extends State<UserDataCollection> {
                         ElevatedButton(
                             onPressed: () async {
                               bool isValid = _key.currentState!.validate();
+                              if(file == null){
+                                AccessoryWidgets.showSnackBar("Add a CV", context);
+                                return;
+                              }
                               if (isValid) {
                                 setState(() {
                                   isLoading = true;
