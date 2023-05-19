@@ -31,3 +31,8 @@ https://github.com/SethukumarJ/TRX-MT-frontend/assets/114211073/6df298d6-43ad-43
      <image src = "https://github.com/SethukumarJ/TRX-MT-frontend/assets/114211073/d0842c74-1cc2-4dd7-a413-30eed52c117d" width = "22%" height = "22%" />
  </p>
 
+API DOCUMENTATION-SWAGGER
+### `http://http://3.133.142.121:8989//swagger/index.html`
+
+LINK TO THE BACKEND REPOSITORY
+### `https://github.com/SethukumarJ/TRX-MT-backend`
