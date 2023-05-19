@@ -174,4 +174,12 @@ class AuthProvider extends ChangeNotifier{
     return "";
   }
 
+  Future<void> signOut()async{
+    final ref = await SharedPreferences.getInstance();
+    ref.remove("access_token");
+    ref.remove("refresh_token");
+    _isAuth = false;
+    notifyListeners();
+  }
+
 }
