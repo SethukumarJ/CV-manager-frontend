@@ -58,4 +58,10 @@ class AuthProvider extends ChangeNotifier{
     return await _authenticate(email, password, context, url);
   }
 
+  Future<bool> login(
+      String email, String password, BuildContext context) async {
+    const url = "http://3.133.142.121:8989/user/login";
+    return await _authenticate(email, password, context, url);
+  }
+
 }
