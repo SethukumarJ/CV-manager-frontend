@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -96,6 +98,80 @@ class AuthProvider extends ChangeNotifier{
     }catch (e) {
       print("$e error occured while fetching current user");
     }
+  }
+
+  Future<bool> userRegistration(File file, DateTime dob, String phone,
+      String firstName, String lastName, BuildContext context) async {
+    bool isSuccessful = true;
+    final url = Uri.parse("http://3.133.142.121:8989/user/profile");
+    try {
+      final task = await FirebaseStorage.instance
+          .ref("user_cv")
+          .child("${DateTime.now()}.pdf")
+          .putFile(file);
+      final downloadUrl = await task.ref.getDownloadURL();
+      final sharedPref = await SharedPreferences.getInstance();
+      final accessToken = sharedPref.getString("access_token");
+
+      String dateOfBirth= DateFormat("yyyy-MM-dd").format(dob);
+      print(dateOfBirth);
+      print(accessToken);
+      final response = await http.patch(url,
+          body: json.encode({
+            "cv": downloadUrl,
+            "date_of_birth": dateOfBirth,
+            "first_name": firstName,
+            "last_name": lastName,
+            "phone": phone
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $accessToken"
+          });
+      if (response.statusCode == 200) {
+        _isRegistered = true;
+        notifyListeners();
+      } else {
+        _isRegistered = false;
+        notifyListeners();
+        throw HttpException(json.decode(response.body)["message"]);
+      }
+    } on HttpException catch (e) {
+      isSuccessful = false;
+      AccessoryWidgets.showSnackBar(e.message, context);
+    } catch (e) {
+      isSuccessful = false;
+      print("$e error occured while registering user");
+    }
+    return isSuccessful;
+  }
+
+  Future<String> getNewAccessToken() async {
+    try {
+      final ref = await SharedPreferences.getInstance();
+      final refreshToken =  ref.getString("refresh_token");
+      Uri url = Uri.parse("https://cundr.lamsta.com/auth/token/refresh/");
+      final response = await http.post(url, body: {"refresh": refreshToken});
+      final responseData = jsonDecode(response.body);
+
+      if (responseData["code"] == "token_not_valid") {
+        _isAuth = false;
+
+        ref.remove("access_token");
+        ref.remove("refresh_token");
+
+        notifyListeners();
+      } else {
+        ref.setString("access_token", responseData["access_token"]);
+
+        return responseData["access_token"];
+      }
+    } on HttpException catch (e) {
+      print(e);
+    } catch (e) {
+      print("error while getting refresh token $e");
+    }
+    return "";
   }
 
 }
