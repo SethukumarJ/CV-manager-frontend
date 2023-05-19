@@ -35,4 +35,4 @@ API DOCUMENTATION-SWAGGER
 ### `http://http://3.133.142.121:8989//swagger/index.html`
 
 LINK TO THE BACKEND REPOSITORY
-### `https://github.com/SethukumarJ/TRX-MT-backend`
+### `https://github.com/SethukumarJ/CV-manager-backend`
