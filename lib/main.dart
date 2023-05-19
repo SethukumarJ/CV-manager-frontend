@@ -49,8 +49,13 @@ class OpeningScreen extends StatefulWidget {
 }
 
 class _OpeningScreenState extends State<OpeningScreen> {
-  @override
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    Provider.of<AuthProvider>(context, listen: false).fetchCurrentUser();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
