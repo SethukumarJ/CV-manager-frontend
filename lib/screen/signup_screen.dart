@@ -5,8 +5,9 @@ import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:trx_frontend/screen/user_data_collection_screen.dart';
 
-import '../helpers/validators.dart';
+import '../helpers/custom_route_animation.dart';
 
+import '../helpers/validators.dart';
 import '../provider/auth_provider.dart';
 import '../utils/custom_colors.dart';
 
@@ -174,7 +175,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   if (!isSuccessful) {
                                     setState(() {});
                                   } else {
-
+                                    newPage();
                                   }
                                 }
                               },
@@ -206,5 +207,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  void newPage() {
+    Navigator.pushReplacement(
+        context, SlidePageRoute(page: const UserDataCollection()));
+  }
 }
-
